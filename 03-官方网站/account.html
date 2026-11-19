@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>账号与隐私说明 — 基本工具集齐工具箱</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header><div class="wrap nav">
+  <a class="brand" href="index.html">🧰 基本工具集齐<span>工具箱</span></a>
+  <nav class="links">
+    <a href="index.html">首页</a><a href="features.html">功能</a>
+    <a href="download.html">下载</a>
+    <a href="account.html">账号说明</a>
+  </nav>
+</div></header>
+
+<section><div class="wrap">
+  <h2>账号与权限</h2>
+  <p class="section-desc">账号数据保存在本机 SQLite 数据库；云端互通接口已预留，正式上线前不会把数据上传到任何服务器。</p>
+  <div class="grid cols-2">
+    <div class="card"><h3>注册流程（按顺序校验）</h3>
+      <ul class="plain">
+        <li>① 用户名：最多 6 个字符、唯一</li>
+        <li>② 手机号：11 位大陆手机号、唯一</li>
+        <li>③ 邮箱：格式合法、唯一</li>
+        <li>④ 密码：8–20 位，英文字母和数字组成，且必须同时含字母与数字</li>
+      </ul>
+    </div>
+    <div class="card"><h3>登录与找回</h3>
+      <ul class="plain">
+        <li>支持用户名 / 手机号 / 邮箱任一方式登录</li>
+        <li>勾选「15 天免登录」后本机 15 天不再弹登录窗</li>
+        <li>「15 天免登录」为游客模式，数据仅存本机</li>
+        <li>忘记密码：验证用户名 + 手机 + 邮箱后重置（演示版；正式版接短信/邮箱验证码）</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2 style="margin-top:52px">权限矩阵</h2>
+  <table>
+    <tr><th>能力</th><th>游客</th><th>普通用户</th><th>管理员</th><th>主管理员</th></tr>
+    <tr><td>全部 14 个工具 / 数据保存</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+    <tr><td>管理界面（用户增删/恢复）</td><td class="no">—</td><td class="no">—</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+    <tr><td>创建管理员账号</td><td class="no">—</td><td class="no">—</td><td class="no">—</td><td class="yes">✓ 唯一</td></tr>
+    <tr><td>代码编辑区（受限配置补丁）</td><td class="no">—</td><td class="no">—</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+    <tr><td>修改用户资料</td><td class="no">禁止</td><td class="no">禁止</td><td class="no">禁止</td><td class="no">禁止</td></tr>
+  </table>
+  <div class="note">主管理员创建的新管理员是「受限管理员」：可以打开管理界面查看列表与审计日志、使用代码编辑区（仅外观配置），但<b>不能管理别的账号、不能创建管理员</b>。系统不提供任何修改用户资料的入口与接口。</div>
+</div></section>
+
+<section class="alt"><div class="wrap">
+  <h2>隐私与安全</h2>
+  <div class="grid cols-3">
+    <div class="card"><h3>🔑 密码</h3><p>只存 PBKDF2-SHA256 加盐哈希（60 万次迭代），任何文档、代码、日志都不保存明文密码；首次启动由主管理员本人录入。</p></div>
+    <div class="card"><h3>🧾 审计</h3><p>注册、登录、管理操作、配置补丁全部写审计日志；删除为软删除，30 天内可恢复，防止误删。</p></div>
+    <div class="card"><h3>🛡 运行安全</h3><p>计算器拒绝任意代码执行；解压有 Zip-Slip 防护；清理与隔离可恢复；AI 密钥用 Windows DPAPI 加密。</p></div>
+  </div>
+  <div class="note blue"><b>代码编辑区说明：</b>管理员可在软件内做「小改动」并立即生效，但编辑的是受限配置补丁（白名单 JSON），系统不执行任何 Python 代码；涉及 import、文件/数据库操作、修改核心源码等「大改动」一律拒绝，并提示在开发环境进行。每次应用自动备份、可一键回滚。</div>
+</div></section>
+
+<section><div class="wrap">
+  <h2>常见问题</h2>
+  <details><summary>账号数据会上传云端吗？</summary><p>当前版本不会。所有账号、设置、使用统计都保存在本机 SQLite；双端数据互通已在架构层预留接口，需后续建设云端服务并明确告知用户后才会启用。</p></details>
+  <details><summary>删除账号后能恢复吗？</summary><p>能。删除是软删除并移入回收站，30 天内管理员可在管理界面「回收站」页一键恢复。</p></details>
+  <details><summary>忘记主管理员密码怎么办？</summary><p>使用登录窗口的「忘记密码」，通过用户名 + 手机 + 邮箱三项验证重置；系统只存哈希，无法反向查看原密码。</p></details>
+  <details><summary>会上传我的数据吗？</summary><p>不会。本软件无广告、无遥测、无付费体系；仅在用户主动查询天气或使用自行配置的 AI 助手时联网。</p></details>
+</div></section>
+
+<section class="alt"><div class="wrap">
+  <h2>Code signing policy</h2>
+  <p>Free code signing provided by <a href="https://about.signpath.io">SignPath.io</a>,
+  certificate by <a href="https://signpath.org">SignPath Foundation</a>.
+  Status: <b>Pending approval</b> — 当前发布版本尚未签名，随包提供 SHA-256 校验值。</p>
+  <p>所有发布产物均由本公开仓库的 GitHub Actions 在 GitHub 托管 runner 上自动构建，
+  仅 CI 构建的产物会提交签名，每次发布需人工批准；私钥由 SignPath 的 HSM 保管。
+  <a href="https://github.com/&lt;your-account&gt;/&lt;repo&gt;/blob/main/CODE_SIGNING_POLICY.md">查看完整签名策略</a> ·
+  <a href="https://github.com/&lt;your-account&gt;/&lt;repo&gt;/blob/main/PRIVACY.md">隐私政策</a></p>
+</div></section>
+<footer><div class="wrap">
+  <span>© <span id="year">2026</span> 基本工具集齐·免下载工具箱</span>
+  <span><a href="index.html">首页</a> · <a href="download.html">下载</a> · </span>
+</div></footer>
+<script src="js/main.js"></script>
+</body></html>
