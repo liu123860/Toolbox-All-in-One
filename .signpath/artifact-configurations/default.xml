@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Artifact configuration for the GitHub workflow artifact "out/unsigned.zip".
+
+  upload-artifact is called with archive:false, so the artifact IS this ZIP file
+  (no extra wrapper). The root element must therefore be <zip-file>.
+
+  unsigned.zip layout (all names ASCII on purpose - avoids encoding issues in
+  signing policies and metadata matching):
+      main.exe       copy of the onedir main executable
+      setup.exe      copy of the setup executable
+      portable.exe   copy of the executable that will be embedded in the portable ZIP
+
+  The repack mode of build/build_ci.py puts each signed copy back at its
+  real path.
+
+  product-name / product-version are restriction attributes: SignPath refuses
+  the signing request unless every PE carries exactly these values. The values
+  are written into the PE version resource by PyInstaller (version-file option)
+  at build time. ${product} and ${version} are user-defined parameters supplied
+  by the workflow's "parameters" input.
+-->
+<artifact-configuration xmlns="http://signpath.io/artifact-configuration/v1">
+  <zip-file>
+    <pe-file path="main.exe"
+             product-name="${product}"
+             product-version="${version}">
+      <authenticode-sign hash-algorithm="sha256" append="false" />
+    </pe-file>
+    <pe-file path="setup.exe"
+             product-name="${product}"
+             product-version="${version}">
+      <authenticode-sign hash-algorithm="sha256" append="false" />
+    </pe-file>
+    <pe-file path="portable.exe"
+             product-name="${product}"
+             product-version="${version}">
+      <authenticode-sign hash-algorithm="sha256" append="false" />
+    </pe-file>
+  </zip-file>
+</artifact-configuration>
