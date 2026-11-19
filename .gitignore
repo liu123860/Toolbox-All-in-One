@@ -1,0 +1,14 @@
+# 构建/运行产物
+__pycache__/
+*.pyc
+*.db
+*.docx
+vendor/
+_spec/
+_build/
+*.log
+.idea/
+.vscode/
+# 操作系统
+.DS_Store
+Thumbs.db
