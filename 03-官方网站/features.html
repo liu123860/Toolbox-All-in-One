@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>功能详情 — 基本工具集齐工具箱</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header><div class="wrap nav">
+  <a class="brand" href="index.html">🧰 基本工具集齐<span>工具箱</span></a>
+  <nav class="links">
+    <a href="index.html">首页</a><a href="features.html">功能</a>
+    <a href="download.html">下载</a>
+    <a href="account.html">账号说明</a>
+    <a class="btn small" href="download.html">立即获取</a>
+  </nav>
+</div></header>
+
+<section><div class="wrap">
+  <h2>功能详情</h2>
+  <p class="section-desc">自研轻量实现 + 开源专业组件容器集成，两条路都保证"点得开、用得上"。</p>
+  <div class="grid cols-2">
+    <div class="card"><h3>🧮 生活工具</h3><p><b>计算器</b>：AST 安全求值，支持括号、幂、开方、三角函数与历史记录，拒绝任意代码执行。<br><b>天气</b>：Open-Meteo 主源 + wttr.in 自动回退，7 日预报，离线显示上次缓存。</p></div>
+    <div class="card"><h3>📝 办公工具</h3><p><b>文档编辑</b>：txt / md / html / rtf / docx 读写，可交由 LibreOffice 容器接管复杂排版。<br><b>PDF 阅读</b>：QtPdf 内置引擎。<br><b>AI 助手</b>：多模型接口，密钥 Windows DPAPI 加密，未配置时可演示。</p></div>
+    <div class="card"><h3>🎬 媒体工具</h3><p><b>音乐 / 视频</b>：QtMultimedia 内置引擎 + 播放列表，检测到 VLC 便携版后自动接管全格式。<br><b>高清转码</b>：FFmpeg 容器 H.264 / H.265。</p></div>
+    <div class="card"><h3>🛠 系统工具</h3><p><b>浏览器</b>：Chromium 内核多标签页。<br><b>垃圾清理</b>：白名单目录只读扫描，二次确认后送回收站。<br><b>病毒扫描</b>：ClamAV 容器或明确标注的轻量启发式，隔离可恢复。<br><b>压缩解压</b>：Zip-Slip 防护。<br><b>扫描打印</b>：打印预览 + WIA 扫描。</p></div>
+  </div>
+</div></section>
+
+<section class="alt"><div class="wrap">
+  <h2>容器式集成：专业软件装进"盒子"</h2>
+  <p class="section-desc">不捆绑任何商业软件；开源组件的便携版放进 vendor 目录即被主程序接管，没有组件时自动降级到内置实现。</p>
+  <table>
+    <tr><th>能力</th><th>首选开源组件</th><th>无组件时的内置降级</th><th>许可证处理</th></tr>
+    <tr><td>文档高级排版</td><td>LibreOffice 便携版</td><td>自研编辑器（docx 由 python-docx 支持）</td><td>子进程隔离</td></tr>
+    <tr><td>全格式播放</td><td>VLC 便携版</td><td>QtMultimedia</td><td>子进程隔离</td></tr>
+    <tr><td>病毒扫描</td><td>ClamAV</td><td>轻量启发式（界面明确标注非完整引擎）</td><td>子进程隔离</td></tr>
+    <tr><td>高清转码</td><td>FFmpeg</td><td>提示放入容器后可用</td><td>子进程隔离</td></tr>
+    <tr><td>压缩 7z</td><td>7-Zip / py7zr</td><td>zip / tar.gz 内置支持</td><td>宽松许可证</td></tr>
+  </table>
+  <div class="note blue">GPL 组件一律通过独立子进程调用，不与主程序链接，避免许可证"传染"；所有随包组件附 LICENSE 原文，并在"关于"页列出开源声明。</div>
+</div></section>
+
+<section><div class="wrap">
+  <h2>设置系统：五个维度实时热切换</h2>
+  <div class="grid cols-3">
+    <div class="card"><h3>样式</h3><p>简约白 / 商务深 / 护眼绿 / 暖橙四套主题包，密度与图标风格可调。</p></div>
+    <div class="card"><h3>分类</h3><p>按用途、按使用频率分组，工具宫格大小三档。</p></div>
+    <div class="card"><h3>颜色</h3><p>主题色取色器、亮暗跟随系统、对比度校验。</p></div>
+    <div class="card"><h3>速度</h3><p>动画节奏四档、懒加载 / 预加载策略。</p></div>
+    <div class="card"><h3>效果</h3><p>阴影、毛玻璃、转场效果独立开关。</p></div>
+    <div class="card"><h3>广告</h3><p>总开关 + 三类广告位独立开关 + 频率档位；便携版强制关闭。</p></div>
+  </div>
+  <div class="note">设置支持导入 / 导出 JSON 与一键恢复默认；每次改动立即生效，无需重启。</div>
+</div></section>
+
+<section class="alt"><div class="wrap">
+  <h2>Code signing policy</h2>
+  <p>Free code signing provided by <a href="https://about.signpath.io">SignPath.io</a>,
+  certificate by <a href="https://signpath.org">SignPath Foundation</a>.
+  Status: <b>Pending approval</b> — 当前发布版本尚未签名，随包提供 SHA-256 校验值。</p>
+  <p>所有发布产物均由本公开仓库的 GitHub Actions 在 GitHub 托管 runner 上自动构建，
+  仅 CI 构建的产物会提交签名，每次发布需人工批准；私钥由 SignPath 的 HSM 保管。
+  <a href="https://github.com/&lt;your-account&gt;/&lt;repo&gt;/blob/main/CODE_SIGNING_POLICY.md">查看完整签名策略</a> ·
+  <a href="https://github.com/&lt;your-account&gt;/&lt;repo&gt;/blob/main/PRIVACY.md">隐私政策</a></p>
+</div></section>
+<footer><div class="wrap">
+  <span>© <span id="year">2026</span> 基本工具集齐·免下载工具箱</span>
+  <span><a href="index.html">首页</a> · <a href="download.html">下载</a> · </span>
+</div></footer>
+<script src="js/main.js"></script>
+</body></html>
