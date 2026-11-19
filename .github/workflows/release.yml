@@ -1,0 +1,119 @@
+name: release
+
+# SignPath Foundation (OSS) requirements enforced here:
+#  * build on GitHub-hosted runners only
+#  * unsigned artifact uploaded as a GitHub workflow artifact before signing
+#  * only CI-built artifacts are submitted for signing
+#  * product name/version enforced by .signpath/artifact-configurations/default.xml
+#  * every signing request is manually approved in the SignPath console
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Four-part PE version, e.g. 1.0.0.0'
+        required: true
+        default: '1.0.0.0'
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  release:
+    runs-on: windows-2022          # GitHub-hosted: mandatory for OSS subscriptions
+    env:
+      SIGNPATH_ORGANIZATION_ID: ${{ vars.SIGNPATH_ORGANIZATION_ID }}
+      PRODUCT_NAME: 'Toolbox All-in-One'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r 02-程序文件/requirements.txt
+          python -m pip install pyinstaller
+
+      - name: Resolve version
+        id: ver
+        shell: pwsh
+        run: |
+          $v = "${{ github.event.inputs.version }}"
+          if ([string]::IsNullOrWhiteSpace($v)) { $v = "${{ github.ref_name }}".TrimStart('v') }
+          if ($v.Split('.').Count -ne 4) { $v = "$v.0" }
+          if ($v -notmatch '^\d+\.\d+\.\d+\.\d+$') { throw "Invalid version: $v" }
+          "version=$v" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+
+      - name: Build (onedir + setup + unsigned artifact)
+        run: python build/build_ci.py --version "${{ steps.ver.outputs.version }}" --product "${{ env.PRODUCT_NAME }}" --root . --out out
+
+      - name: Upload unsigned artifact
+        id: upload_unsigned
+        uses: actions/upload-artifact@v7
+        with:
+          # unique name per run: avoids upload-artifact issues #769 / #785
+          name: unsigned-${{ github.run_id }}-${{ github.run_attempt }}
+          path: out/unsigned.zip
+          archive: false          # do not wrap our ZIP in another ZIP
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Submit signing request to SignPath
+        id: sign
+        if: ${{ env.SIGNPATH_ORGANIZATION_ID != '' && secrets.SIGNPATH_API_TOKEN != '' }}
+        uses: signpath/github-action-submit-signing-request@v3
+        with:
+          api-token: '${{ secrets.SIGNPATH_API_TOKEN }}'
+          organization-id: '${{ vars.SIGNPATH_ORGANIZATION_ID }}'
+          project-slug: '<project-slug>'
+          signing-policy-slug: 'release-signing'
+          artifact-configuration-slug: 'default'
+          github-artifact-id: '${{ steps.upload_unsigned.outputs.artifact-id }}'
+          wait-for-completion: true
+          wait-for-completion-timeout-in-seconds: 1800   # manual approval may take time
+          output-artifact-directory: 'out/signed'
+          skip-decompress: true                          # archive: false was used
+          parameters: |
+            version: "${{ steps.ver.outputs.version }}"
+            product: "${{ env.PRODUCT_NAME }}"
+
+      - name: Report unsigned fallback
+        if: ${{ steps.sign.outcome == 'skipped' }}
+        run: echo "::warning::SignPath secrets not configured - release will be unsigned with SHA256SUMS only"
+
+      - name: Repack signed executables and rebuild portable ZIP
+        if: ${{ steps.sign.outcome == 'success' }}
+        run: python build/build_ci.py --repack --version "${{ steps.ver.outputs.version }}" --product "${{ env.PRODUCT_NAME }}" --root . --out out
+
+      - name: Verify Authenticode signatures
+        if: ${{ steps.sign.outcome == 'success' }}
+        shell: pwsh
+        run: |
+          $files = @(
+            "out\release\Setup-Toolbox-All-in-One.exe",
+            "out\release\Toolbox-All-in-One\Toolbox-All-in-One.exe"
+          )
+          foreach ($f in $files) {
+            $s = Get-AuthenticodeSignature $f
+            "$f -> $($s.Status) / $($s.SignerCertificate.Subject)"
+            if ($s.Status -ne 'Valid') { throw "Invalid signature on $f" }
+            if (-not $s.TimeStamperCertificate) { throw "Missing RFC3161 timestamp on $f" }
+          }
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            out/release/Setup-Toolbox-All-in-One.exe
+            out/release/Toolbox-All-in-One-portable.zip
+            out/release/SHA256SUMS.txt
+          draft: true
+          generate_release_notes: true
