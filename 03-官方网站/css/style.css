@@ -1,0 +1,119 @@
+/* 基本工具集齐·免下载工具箱 官方网站 —— 浅色主题，无外部依赖（离线可看） */
+:root {
+  --accent: #2E7CF6;
+  --accent-dark: #1D5FD0;
+  --ink: #1B2430;
+  --sub: #5B6675;
+  --line: #E5EAF2;
+  --bg: #F7F9FC;
+  --card: #FFFFFF;
+  --ok: #15803D;
+  --warn: #B45309;
+  --radius: 16px;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font-family: "Microsoft YaHei", "PingFang SC", "Segoe UI", system-ui, sans-serif;
+  line-height: 1.75; font-size: 16px;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+.wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+
+/* 顶栏 */
+header { background: rgba(255,255,255,.94); border-bottom: 1px solid var(--line);
+  position: sticky; top: 0; z-index: 20; backdrop-filter: blur(8px); }
+.nav { display: flex; align-items: center; gap: 28px; height: 68px; }
+.brand { font-weight: 800; font-size: 19px; color: var(--ink); letter-spacing: .3px; }
+.brand span { color: var(--accent); }
+nav.links { display: flex; gap: 22px; margin-left: auto; flex-wrap: wrap; }
+nav.links a { color: var(--sub); font-size: 15px; padding: 6px 2px; }
+nav.links a.active, nav.links a:hover { color: var(--accent); font-weight: 700; text-decoration: none; }
+.btn { display: inline-block; background: var(--accent); color: #fff !important;
+  padding: 11px 24px; border-radius: 10px; font-weight: 700; border: 0; cursor: pointer;
+  text-decoration: none !important; transition: .18s; }
+.btn:hover { background: var(--accent-dark); transform: translateY(-1px); }
+.btn.ghost { background: #fff; color: var(--accent) !important; border: 1px solid var(--line); }
+.btn.small { padding: 8px 16px; font-size: 14px; }
+
+/* 首屏 */
+.hero { padding: 76px 0 60px;
+  background: radial-gradient(900px 380px at 20% -10%, #DCEBFF 0%, transparent 70%),
+              radial-gradient(700px 320px at 90% 0%, #E9F3FF 0%, transparent 70%); }
+.hero h1 { font-size: 46px; line-height: 1.25; margin: 0 0 18px; letter-spacing: -.5px; }
+.hero h1 em { color: var(--accent); font-style: normal; }
+.hero p.lead { font-size: 19px; color: var(--sub); max-width: 720px; margin: 0 0 30px; }
+.hero .actions { display: flex; gap: 14px; flex-wrap: wrap; }
+.badges { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 34px; }
+.badge { background: #fff; border: 1px solid var(--line); border-radius: 999px;
+  padding: 7px 15px; font-size: 14px; color: var(--sub); }
+
+/* 区块 */
+section { padding: 56px 0; }
+section.alt { background: #fff; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+h2 { font-size: 30px; margin: 0 0 10px; }
+.section-desc { color: var(--sub); margin: 0 0 34px; }
+.grid { display: grid; gap: 18px; }
+.grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+.grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
+.grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 24px; box-shadow: 0 3px 14px rgba(30,60,110,.04); }
+.card .ico { font-size: 30px; line-height: 1; }
+.card h3 { margin: 12px 0 8px; font-size: 18px; }
+.card p { margin: 0; color: var(--sub); font-size: 14.5px; }
+.tag { display: inline-block; font-size: 12px; padding: 2px 9px; border-radius: 999px;
+  background: #EAF2FF; color: var(--accent-dark); margin-left: 6px; vertical-align: middle; }
+.tag.vip { background: #FFF2E3; color: var(--warn); }
+
+/* 表格 */
+table { width: 100%; border-collapse: collapse; background: #fff;
+  border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+th, td { padding: 14px 18px; text-align: left; border-bottom: 1px solid var(--line); font-size: 15px; }
+th { background: #F2F6FD; font-weight: 700; }
+tr:last-child td { border-bottom: 0; }
+td.yes { color: var(--ok); font-weight: 700; }
+td.no { color: #98A2B3; }
+
+/* 价格卡 */
+.price { text-align: center; padding: 32px 22px; position: relative; }
+.price.pop { border: 2px solid var(--accent); box-shadow: 0 10px 30px rgba(46,124,246,.13); }
+.price .num { font-size: 40px; font-weight: 800; color: var(--accent); margin: 8px 0; }
+.price .num small { font-size: 16px; font-weight: 500; color: var(--sub); }
+.price ul { list-style: none; padding: 0; margin: 18px 0 24px; text-align: left; }
+.price li { padding: 7px 0; color: var(--sub); font-size: 14.5px; }
+.price li::before { content: "✓ "; color: var(--ok); font-weight: 700; }
+.ribbon { position: absolute; top: -13px; left: 50%; transform: translateX(-50%);
+  background: var(--accent); color: #fff; font-size: 12px; padding: 4px 14px; border-radius: 999px; }
+
+/* 步骤 / FAQ / 提示 */
+.steps { counter-reset: s; }
+.step { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 22px 24px; }
+.step::before { counter-increment: s; content: counter(s); display: inline-flex;
+  width: 30px; height: 30px; border-radius: 50%; background: var(--accent); color: #fff;
+  align-items: center; justify-content: center; font-weight: 700; margin-bottom: 10px; }
+.note { background: #FFF8EC; border: 1px solid #F3DFB8; border-radius: 12px;
+  padding: 16px 20px; color: #7A5518; font-size: 14.5px; margin: 22px 0; }
+.note.blue { background: #EFF6FF; border-color: #CFE1FF; color: #1E4B9B; }
+details { background: #fff; border: 1px solid var(--line); border-radius: 12px;
+  padding: 14px 18px; margin-bottom: 10px; }
+summary { cursor: pointer; font-weight: 700; }
+details p { color: var(--sub); margin: 10px 0 0; font-size: 14.5px; }
+ul.plain { color: var(--sub); padding-left: 20px; }
+ul.plain li { margin: 6px 0; }
+
+footer { background: #142033; color: #B9C4D4; padding: 36px 0; font-size: 14px; }
+footer .wrap { display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+footer a { color: #9CC0FF; }
+
+@media (max-width: 860px) {
+  .grid.cols-3, .grid.cols-4, .grid.cols-2 { grid-template-columns: 1fr 1fr; }
+  .hero h1 { font-size: 34px; }
+  nav.links { gap: 12px; }
+}
+@media (max-width: 560px) {
+  .grid.cols-3, .grid.cols-4, .grid.cols-2 { grid-template-columns: 1fr; }
+  .nav { height: auto; padding: 12px 0; flex-wrap: wrap; }
+}
