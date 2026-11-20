@@ -20,7 +20,7 @@ Written in Python 3.13 + PySide6; data is stored locally in SQLite.
 ## Download
 
 - Free builds: <https://github.com/liu123860/Toolbox-All-in-One/releases>
-- Project website: see the repository homepage and `03-官方网站/`
+- Project website: <https://v.gd/rOEyJx> (source files in `03-官方网站/`)
 - `Setup-基本工具集齐工具箱.exe` + program folder — user-level install, no admin rights
 - `基本工具集齐工具箱-便携纯净版.zip` — unzip and run; delete the folder to uninstall
 
