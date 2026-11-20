@@ -9,7 +9,8 @@
 <body>
 <header><div class="wrap nav">
   <a class="brand" href="index.html">🧰 基本工具集齐<span>工具箱</span></a>
-  <nav class="links">
+  <button class="nav-toggle" type="button" aria-label="展开导航菜单" aria-expanded="false" aria-controls="site-nav">☰</button>
+  <nav class="links" id="site-nav">
     <a href="index.html">首页</a><a href="features.html">功能</a>
     <a href="download.html">下载</a>
     <a href="account.html">账号说明</a>
@@ -45,14 +46,14 @@
     </div>
   </div>
 
-  <table style="margin-top:34px">
+  <div class="table-scroll"><table style="margin-top:34px">
     <tr><th>对比项</th><th>正式安装版</th><th>便携纯净版</th></tr>
     <tr><td>广告 / 付费 / 遥测</td><td class="yes">完全没有</td><td class="yes">完全没有</td></tr>
     <tr><td>界面特效</td><td class="yes">完整</td><td>精简（省资源）</td></tr>
     <tr><td>数据位置</td><td>%APPDATA%</td><td>程序目录 data/</td></tr>
     <tr><td>安装 / 卸载</td><td>安装向导 / 卸载.bat</td><td>解压 / 删文件夹</td></tr>
     <tr><td>内置工具数量</td><td class="yes">14 个</td><td class="yes">14 个</td></tr>
-  </table>
+  </table></div>
 </div></section>
 
 <section class="alt"><div class="wrap">

@@ -108,12 +108,53 @@ footer { background: #142033; color: #B9C4D4; padding: 36px 0; font-size: 14px; 
 footer .wrap { display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
 footer a { color: #9CC0FF; }
 
+/* ===== 移动端汉堡菜单按钮（默认隐藏） ===== */
+.nav-toggle { display: none; margin-left: auto; width: 44px; height: 44px;
+  align-items: center; justify-content: center; background: #fff; cursor: pointer;
+  border: 1px solid var(--line); border-radius: 10px; font-size: 20px; color: var(--ink);
+  -webkit-tap-highlight-color: transparent; }
+.nav-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* 表格容器：窄屏可横向滚动，避免撑破布局 */
+.table-scroll { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.table-scroll table { min-width: 560px; }
+
 @media (max-width: 860px) {
   .grid.cols-3, .grid.cols-4, .grid.cols-2 { grid-template-columns: 1fr 1fr; }
-  .hero h1 { font-size: 34px; }
-  nav.links { gap: 12px; }
+  .hero { padding: 56px 0 44px; }
+  .hero h1 { font-size: clamp(28px, 7vw, 38px); }
+  .hero p.lead { font-size: 17px; }
+
+  /* 导航折叠为汉堡菜单 */
+  nav.links { display: none; position: absolute; top: 100%; left: 0; right: 0;
+    flex-direction: column; gap: 0; margin: 0; padding: 10px 24px 18px;
+    background: rgba(255,255,255,.98); border-bottom: 1px solid var(--line);
+    box-shadow: 0 12px 24px rgba(30,60,110,.10); }
+  nav.links.open { display: flex; }
+  nav.links a { padding: 13px 4px; min-height: 44px; display: flex; align-items: center;
+    font-size: 16px; border-bottom: 1px solid var(--line); }
+  nav.links a:last-child { border-bottom: 0; }
+  nav.links a.btn { margin-top: 12px; justify-content: center; border: 0;
+    min-height: 46px; font-size: 16px; }
+  .nav-toggle { display: inline-flex; }
 }
+
 @media (max-width: 560px) {
   .grid.cols-3, .grid.cols-4, .grid.cols-2 { grid-template-columns: 1fr; }
-  .nav { height: auto; padding: 12px 0; flex-wrap: wrap; }
+  .wrap { padding: 0 18px; }
+  .nav { height: 60px; }
+  .brand { font-size: 17px; }
+  section { padding: 44px 0; }
+  h2 { font-size: clamp(23px, 6vw, 28px); }
+  .card { padding: 20px; }
+  .hero .actions .btn, .btn { min-height: 44px; }
+  .price .num { font-size: 34px; }
+  footer .wrap { flex-direction: column; gap: 10px; }
+  img { max-width: 100%; height: auto; }
+  details summary { min-height: 44px; display: flex; align-items: center; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { transition: none !important; animation: none !important; }
 }
