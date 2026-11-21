@@ -23,7 +23,7 @@ from app.tools import registry
 
 
 class PlaceholderToolWindow(QWidget):
-    """工具未实现时的占位窗口（当前 14 个工具均有真实实现）。"""
+    """工具未实现时的占位窗口（当前 50 个工具均有真实实现）。"""
 
     def __init__(self, tool: ToolInfo):
         super().__init__()

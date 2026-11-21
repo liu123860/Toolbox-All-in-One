@@ -7,12 +7,21 @@ into one program, so you do not have to download a separate app for each task.
 
 ## What it does
 
-- Calculator, 7-day weather forecast, document editor (txt/md/html/rtf/docx), PDF reader
-- Music / video player, Chromium-based multi-tab browser
-- Archive manager (zip / tar.gz / 7z, with path-traversal protection)
-- Temporary-file cleaner (whitelist scan, explicit confirmation, Recycle Bin)
-- Lightweight local file health check (quarantine is recoverable; not a full AV engine)
-- Scan & print helper, optional AI assistant, component status overview
+**50 built-in tools**, no separate downloads, all free and open source:
+
+- **Life (13)**: calculator, 7-day weather, unit/base conversion, mortgage & tax
+  calculators, BMI, timestamp & date calculators, timer/stopwatch, random picker,
+  password generator, relative-title calculator
+- **Office (16)**: document editor (txt/md/html/rtf/docx), PDF reader, AI assistant,
+  word count, text diff/case/Base64/URL/JSON/regex/encoding tools, notepad, todo
+  list, Markdown preview, paint board, Pomodoro timer
+- **Media (9)**: music & video players, FFmpeg transcoding, image viewer/converter/
+  compressor, screen color picker, color palette, screenshot
+- **System (12)**: Chromium multi-tab browser, temp-file cleaner (whitelist scan,
+  explicit confirmation, Recycle Bin), lightweight local file health check
+  (recoverable quarantine; not a full AV engine), archive manager (zip / tar.gz /
+  7z with path-traversal protection), scan & print, component status, file hash,
+  batch rename, file split/merge, disk usage, system info, process manager
 
 Written in Python 3.13 + PySide6; data is stored locally in SQLite.
 **No advertisements, no paid tiers, no telemetry, and no account required.**
