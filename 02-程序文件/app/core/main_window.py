@@ -3,11 +3,11 @@ from __future__ import annotations
 
 from typing import Optional
 
-from PySide6.QtCore import Qt
+from PySide6.QtCore import QPoint, QRect, QSize, Qt
 from PySide6.QtWidgets import (
-    QFrame, QGridLayout, QHBoxLayout, QLabel, QLineEdit, QListWidget,
+    QFrame, QGridLayout, QHBoxLayout, QLabel, QLayout, QLineEdit, QListWidget,
     QListWidgetItem, QMainWindow, QMessageBox, QPushButton, QScrollArea,
-    QToolButton, QVBoxLayout, QWidget,
+    QSizePolicy, QToolButton, QVBoxLayout, QWidget,
 )
 
 from app.account.auth import logout
@@ -20,6 +20,83 @@ from app.settings.manager import SettingsManager
 from app.settings.panel import SettingsDialog
 from app.settings.theme import build_qss
 from app.tools import registry
+
+
+class FlowLayout(QLayout):
+    """流式布局：子项从左到右等距排列，靠左对齐，排满一行自动换行。
+
+    替换原先固定 5 列的 QGridLayout —— 后者在栏目工具少时列宽拉伸、
+    按钮居中且空隙巨大。本布局保持按钮固定尺寸，空隙恒定等距，右侧留白。
+    参考 Qt 官方 FlowLayout 示例，spacing 固定为 12px。
+    """
+
+    def __init__(self, parent=None, spacing=12):
+        super().__init__(parent)
+        self._spacing = spacing
+        self._items = []
+        self.setContentsMargins(0, 0, 0, 0)
+
+    def addItem(self, item):
+        self._items.append(item)
+
+    def count(self):
+        return len(self._items)
+
+    def itemAt(self, index):
+        if 0 <= index < len(self._items):
+            return self._items[index]
+        return None
+
+    def takeAt(self, index):
+        if 0 <= index < len(self._items):
+            return self._items.pop(index)
+        return None
+
+    def expandingDirections(self):
+        return Qt.Orientation(0)
+
+    def hasHeightForWidth(self):
+        return True
+
+    def heightForWidth(self, width):
+        return self._do_layout(QRect(0, 0, width, 0), test_only=True)
+
+    def setGeometry(self, rect):
+        super().setGeometry(rect)
+        self._do_layout(rect, test_only=False)
+
+    def sizeHint(self):
+        return self.minimumSize()
+
+    def minimumSize(self):
+        size = QSize()
+        for item in self._items:
+            size = size.expandedTo(item.minimumSize())
+        left, top, right, bottom = self.getContentsMargins()
+        size += QSize(left + right, top + bottom)
+        return size
+
+    def _do_layout(self, rect, test_only):
+        left, top, right, bottom = self.getContentsMargins()
+        x = rect.x() + left
+        y = rect.y() + top
+        line_height = 0
+        space = self._spacing
+
+        for item in self._items:
+            size = item.sizeHint()
+            next_x = x + size.width() + space
+            if next_x - space > rect.right() - right and line_height > 0:
+                x = rect.x() + left
+                y += line_height + space
+                next_x = x + size.width() + space
+                line_height = 0
+            if not test_only:
+                item.setGeometry(QRect(QPoint(x, y), size))
+            x = next_x
+            line_height = max(line_height, size.height())
+
+        return y + line_height + bottom - rect.y()
 
 
 class PlaceholderToolWindow(QWidget):
@@ -181,14 +258,15 @@ class MainWindow(QMainWindow):
 
             row = QFrame()
             row.setObjectName("card")
-            grid = QGridLayout(row)
+            grid = FlowLayout(row, spacing=12)  # 靠左对齐、等距空隙、自动换行
             grid.setContentsMargins(8, 8, 8, 8)
             for i, t in enumerate(visible):
                 btn = QPushButton(f"{t.icon}\n{t.name}")
                 btn.setFixedSize(cell, cell)
                 btn.setToolTip(t.desc)
+                btn.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
                 btn.clicked.connect(lambda checked=False, tool=t: self._open_tool(tool))
-                grid.addWidget(btn, i // 5, i % 5)
+                grid.addWidget(btn)
             self.grid_lay.addWidget(row)
 
         self.grid_lay.addStretch(1)
