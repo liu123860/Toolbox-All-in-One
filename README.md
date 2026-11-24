@@ -28,12 +28,17 @@ Written in Python 3.13 + PySide6; data is stored locally in SQLite.
 
 ## Download
 
-- Free builds: <https://github.com/liu123860/Toolbox-All-in-One/releases>
-- Project website: <https://v.gd/rOEyJx> (source files in `03-官方网站/`)
-- `Setup-基本工具集齐工具箱.exe` + program folder — user-level install, no admin rights
-- `基本工具集齐工具箱-便携纯净版.zip` — unzip and run; delete the folder to uninstall
+Prebuilt binaries are published on the **Releases** page, not in this
+repository (the onedir build is ~700 MB and GitHub caps single files at 100 MB):
 
-Each release ships a SHA-256 checksum so you can verify the download.
+- Releases: <https://github.com/liu123860/Toolbox-All-in-One/releases>
+- Project website: <https://v.gd/rOEyJx> (source files in `03-官方网站/`)
+- `Setup-Toolbox-All-in-One.exe` — user-level installer, no admin rights
+- `Toolbox-All-in-One-portable.zip` — unzip and run; delete the folder to uninstall
+- `SHA256SUMS.txt` — checksums for every release file
+
+Each release ships a SHA-256 checksum so you can verify the download. The
+current release is **v2.0.0** (50 tools, left-aligned equal-spacing tool grid).
 
 > **Windows SmartScreen / antivirus warning:** This is an open-source project
 > built without a commercial code-signing certificate, so Windows may show a
@@ -52,14 +57,15 @@ python -m pip install -r 02-程序文件/requirements.txt
 python -m pip install pyinstaller
 cd 02-程序文件
 python main.py            # run from source
-python main.py --selftest # built-in self test (30 checks)
+python main.py --selftest # built-in self test (writes a PASS/FAIL log)
 ```
 
 Release artifacts are built by CI (`.github/workflows/release.yml`) on
-GitHub-hosted Windows runners.
+GitHub-hosted Windows runners. Pushing a `v*` tag triggers a build; the
+resulting binaries are attached to that Release.
 
 ```powershell
-python build/build_ci.py --version 1.0.0.0 --root . --out out
+python build/build_ci.py --version 2.0.0.0 --root . --out out
 ```
 
 ## Code signing policy

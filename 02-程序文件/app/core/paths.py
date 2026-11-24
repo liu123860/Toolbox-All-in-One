@@ -11,7 +11,7 @@ import sys
 from pathlib import Path
 
 APP_NAME = "基本工具集齐工具箱"
-APP_VERSION = "1.0.0"
+APP_VERSION = "2.0.0"
 
 _VENDORS_DIR_NAME = "vendor"
 
