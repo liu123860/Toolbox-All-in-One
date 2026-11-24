@@ -105,15 +105,35 @@ def build(root: Path, out: Path, version: str, product: str) -> None:
     ]
 
     # 1) main application: onedir (no self-extracting stub, fewer false positives)
-    pyinstaller([
+    # NOTE: do NOT use --collect-submodules PySide6 -- it walks the entire Qt
+    # module tree (Qt3D/QtBluetooth/QtQuick/...) and can hang for hours.
+    # PyInstaller's Qt hooks already follow the modules we actually import;
+    # list them explicitly here only to also catch importlib-based lazy loads.
+    qt_modules = [
+        "PySide6.QtCore", "PySide6.QtGui", "PySide6.QtWidgets",
+        "PySide6.QtMultimedia", "PySide6.QtMultimediaWidgets",
+        "PySide6.QtPdf", "PySide6.QtPdfWidgets", "PySide6.QtPrintSupport",
+        "PySide6.QtWebEngineWidgets",
+    ]
+    pyinstaller_args = [
         "main.py", "--onedir", "--name", APP_NAME,
         "--collect-binaries", "PySide6",
-        "--collect-submodules", "PySide6",
         "--collect-submodules", "app",          # lazy imports via importlib
+        *[a for m in qt_modules for a in ("--collect-submodules", m)],
+    ]
+    # QtWebEngine needs its process binary + resource .pak files present;
+    # collect-binaries brings the binaries, add the resource/webview data explicitly.
+    pyside6_pkg = Path(sys.executable).parent / "Lib" / "site-packages" / "PySide6"
+    for sub in ("resources", "plugins"):
+        d = pyside6_pkg / sub
+        if d.is_dir():
+            pyinstaller_args += ["--add-data", f"{d};PySide6/{sub}"]
+    pyinstaller_args += [
         *(["--add-data", f"{src / 'vendor'};vendor"]
           if (src / "vendor").is_dir() else []),
         *common,
-    ], cwd=src)
+    ]
+    pyinstaller(pyinstaller_args, cwd=src)
 
     # 2) setup wizard: one file, copies the sibling onedir folder
     pyinstaller([
